@@ -1,0 +1,124 @@
+<html lang="en">
+<head>
+    <title>Touch Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+
+        div {
+            height: 100px;
+            width: 100px;
+            z-index: 5;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: white;
+            text-align: center;
+        }
+
+        #testElement2 {
+            top: 150px;
+            left: 150px;
+        }
+
+        #testElement3 {
+            top: 50px;
+            left: 100px;
+        }
+    </style>
+
+    <script>
+
+        var testEl;
+
+        window.onload = function () {
+            testEl = $('testElement');
+            testEl.onmousedown = testEl.ontouchstart = testEl.onmspointerdown = startDrag;
+            testEl2 = $('testElement2');
+            testEl2.onmousedown = testEl2.ontouchstart = testEl2.onmspointerdown = startDrag;
+            testEl3 = $('testElement3');
+            testEl3.onmousedown = testEl3.ontouchstart = testEl3.onmspointerdown = startDrag;
+            document.ongesturechange = function () {
+                return false;
+            }
+
+            testEl.style.msTouchAction = 'none';
+            testEl2.style.msTouchAction = 'none';
+            testEl3.style.msTouchAction = 'none';
+
+        }
+
+        function startDrag(e) {
+
+            if (e.type !== 'mousedown') {
+                this.onmousedown = null;
+                this.ontouchmove = this.onmspointermove = moveDrag;
+                this.ontouchend = this.onmspointerup = function () {
+                    this.ontouchmove = this.onmspointermove = null;
+                    this.ontouchend = this.onmspointerup = null;
+//			this.ontouchstart = startDrag; // Dolfin
+                }
+            } else {
+                return;
+                document.onmousemove = moveDrag;
+                document.onmouseup = function () {
+                    this.innerHTML = 'mouseup';
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                }
+            }
+
+            var pos = [this.offsetLeft, this.offsetTop];
+            var that = this;
+            var origin = getCoors(e);
+
+            function moveDrag(e) {
+                var currentPos = getCoors(e);
+                var deltaX = currentPos[0] - origin[0];
+                var deltaY = currentPos[1] - origin[1];
+                this.style.left = (pos[0] + deltaX) + 'px';
+                this.style.top = (pos[1] + deltaY) + 'px';
+                return false; // cancels scrolling
+
+            }
+
+            function getCoors(e) {
+                var coors = [];
+                if (e.targetTouches && e.targetTouches.length) {
+                    var thisTouch = e.targetTouches[0];
+                    coors[0] = thisTouch.clientX;
+                    coors[1] = thisTouch.clientY;
+                } else {
+                    coors[0] = e.clientX;
+                    coors[1] = e.clientY;
+                }
+                return coors;
+            }
+        }
+
+        function $(id) {
+            return document.getElementById(id);
+        }
+
+
+    </script>
+</head>
+
+<body>
+    <div id="testElement" class="emoji">
+        <big><big><big><big><big>🤔</big></big></big></big></big>
+    </div>
+
+    <div id="testElement2" class="emoji">
+        <big><big><big><big><big>🤔</big></big></big></big></big>
+    </div>
+
+    <div id="testElement3" class="emoji">
+        <big><big><big><big><big>🤔</big></big></big></big></big>
+    </div>
+
+</body>
+
+</html>
