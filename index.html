@@ -27,6 +27,10 @@
             top: 50px;
             left: 100px;
         }
+
+        .emoji {
+            font-size: xx-large;
+        }
     </style>
 
     <script>
@@ -58,7 +62,6 @@
                 this.ontouchend = this.onmspointerup = function () {
                     this.ontouchmove = this.onmspointermove = null;
                     this.ontouchend = this.onmspointerup = null;
-//			this.ontouchstart = startDrag; // Dolfin
                 }
             } else {
                 return;
@@ -80,6 +83,7 @@
                 var deltaY = currentPos[1] - origin[1];
                 this.style.left = (pos[0] + deltaX) + 'px';
                 this.style.top = (pos[1] + deltaY) + 'px';
+                e.innerHTML = String.fromCodePoint(0x1F354);
                 return false; // cancels scrolling
 
             }
@@ -108,15 +112,15 @@
 
 <body>
     <div id="testElement" class="emoji">
-        <big><big><big><big><big>🤔</big></big></big></big></big>
+        🤔
     </div>
 
     <div id="testElement2" class="emoji">
-        <big><big><big><big><big>🤔</big></big></big></big></big>
+        🤔
     </div>
 
     <div id="testElement3" class="emoji">
-        <big><big><big><big><big>🤔</big></big></big></big></big>
+        🤔
     </div>
 
 </body>
