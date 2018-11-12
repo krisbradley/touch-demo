@@ -83,6 +83,7 @@
                 var deltaY = currentPos[1] - origin[1];
                 this.style.left = (pos[0] + deltaX) + 'px';
                 this.style.top = (pos[1] + deltaY) + 'px';
+                console.log((pos[0] + deltaX + pos[1] + deltaY)%999)
                 e.innerHTML = String.fromCodePoint(0x1F354);
                 return false; // cancels scrolling
 
